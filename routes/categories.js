@@ -4,6 +4,7 @@ const {getItems, getItem, createItem, updateItem, deleteItem} = require("../cont
 const uploadMiddelware = require("../utils/handleStorage");
 const {validatorCreate, validatorGetItem} = require ("../validators/categories");
 const autMiddleware = require('../midelware/session');
+const checkRol = require("../midelware/rol");
 
 /**
  * http://localhost:3001/api
@@ -86,7 +87,7 @@ router.get("/:id", validatorGetItem, getItem);
  *      '403':
  *        description: No tiene permisos '403'
  */
-router.post("/", uploadMiddelware.single("myfile"), validatorCreate, createItem);
+router.post("/",autMiddleware, checkRol(["ADMIN"]), uploadMiddelware.single("myfile"), validatorCreate, createItem);
 
 /**
  * Update category
