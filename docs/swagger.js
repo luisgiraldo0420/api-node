@@ -14,6 +14,9 @@ const swaggerDefinition = {
     {
       url: "http://localhost:3000/api",
     },
+    {
+      url: "https://wnqsxbeouh.us12.qoddiapp.com/api",
+    },
   ],
   components: {
     securitySchemes:{
