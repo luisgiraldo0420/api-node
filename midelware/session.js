@@ -1,6 +1,8 @@
 const { usersModel } = require("../models");
 const { handleHttpError } = require("../utils/handleError");
 const { verifyToken } = require("../utils/handleJwt");
+const getProperties = require("../utils/handlePropertiesEngine")
+const propertiesKey = getProperties()
 
 const autMiddleware = async (req, res, next) => {
     try {
@@ -12,11 +14,14 @@ const autMiddleware = async (req, res, next) => {
         const dataToken = await verifyToken(token);
         console.log(dataToken);
 
-        if (!dataToken.user_id){
+        if (!dataToken){
             handleHttpError(res, 'Ups... al parecer no tienes un token de acceso', 401)
             return
         }
-        const user = await usersModel.findById(dataToken.user_id)
+        const query = {
+            [propertiesKey.user_id] : dataToken[propertiesKey.user_id]
+        }
+        const user = await usersModel.findOne(query)
         req.user = user;
         next();
         

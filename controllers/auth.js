@@ -12,9 +12,14 @@ const { usersModel } = require("../models");
 const registerCtrl = async (req, res) => {
   try{
     req = matchedData(req);
+      console.log('------------', req);
+    
+
     const password = await encrypt(req.password);
     const body = { ...req, password };
     const dataUser = await usersModel.create(body);
+
+    console.log(dataUser);
     dataUser.set("password", undefined, { strict: false });
   
     const data = {
